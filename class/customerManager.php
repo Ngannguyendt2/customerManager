@@ -23,10 +23,7 @@ class customerManager
     {
         $sql = "SELECT * FROM $table WHERE id=$id";
         $stmt = $this->conn->query($sql);
-        $result = [];
-        foreach ($stmt->fetchAll() as $row) {
-            array_push($result, $row);
-        }
+        $result = $stmt->fetchAll();
         return $result;
     }
 
@@ -39,6 +36,14 @@ class customerManager
             array_push($customers, $customer);
         }
         return $customers;
+    }
+    public function converttoObject($arr){
+        foreach ($arr as $value){
+            $customer = new Customer($value['name'], $value['email'], $value['address']);
+            $customer->setId($value['id']);
+        }
+        return $customer;
+
     }
 
     public function delete($table, $id)
